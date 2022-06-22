@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
 import prompt from 'prompt-async'
 import bcrypt from 'bcrypt'
+import 'dotenv/config'
 
 import { User } from '../models/index.js'
+import { getMongoUrl } from '../util/index.js'
 
 const createUser = async () => {
   try {
@@ -23,9 +25,7 @@ const createUser = async () => {
       },
     })
 
-    const database = await mongoose.connect(
-      'mongodb+srv://sdomianidze:4GMX680AWm6LMtQS@cluster0.8bito.mongodb.net/main?retryWrites=true&w=majority'
-    )
+    const database = await mongoose.connect(getMongoUrl())
 
     const existingUser = await User.findOne({ username })
     if (existingUser) {
