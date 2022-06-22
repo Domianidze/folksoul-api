@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { User } from '../models/index.js'
 import { authSchema } from '../schemas/index.js'
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     await authSchema.validateAsync(req.body)
 
@@ -29,21 +29,11 @@ export const register = async (req, res) => {
       userId: response._id,
     })
   } catch (err) {
-    if (err.isJoi) {
-      err.statusCode = 422
-    }
-
-    if (!err.statusCode) {
-      err.statusCode = 500
-    }
-
-    res.status(err.statusCode).json({
-      message: err.message,
-    })
+    next(err)
   }
 }
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     await authSchema.validateAsync(req.body)
 
@@ -77,16 +67,6 @@ export const login = async (req, res) => {
       userId: loadedUser.id.toString(),
     })
   } catch (err) {
-    if (err.isJoi) {
-      err.statusCode = 422
-    }
-
-    if (!err.statusCode) {
-      err.statusCode = 500
-    }
-
-    res.status(err.statusCode).json({
-      message: err.message,
-    })
+    next(err)
   }
 }

@@ -3,12 +3,15 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 
 import { AuthRoutes } from './routes/index.js'
+import { errorMiddleware } from './middleware/index.js'
 
 const server = express()
 
 server.use(bodyParser.json())
 
 server.use(AuthRoutes)
+
+server.use(errorMiddleware)
 
 const startServer = async () => {
   try {
