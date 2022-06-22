@@ -17,12 +17,11 @@ export const register = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 12)
-    const user = new User({
+
+    const response = await User.create({
       username: req.body.username,
       password: hashedPassword,
     })
-
-    const response = await user.save()
 
     res.status(201).json({
       message: 'Registered successfully!',
@@ -57,6 +56,7 @@ export const login = async (req, res, next) => {
       {
         username: loadedUser.username,
         userId: loadedUser.id.toString(),
+        expiresIn: '1h',
       },
       '~5N2wZsiGkP;l_+BeK*{>)y"))C[fM',
       { expiresIn: '1h' }

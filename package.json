@@ -5,7 +5,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "user:create": "node ./src/bin/create-user.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,8 @@
     "express": "^4.18.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.0"
+    "mongoose": "^6.4.0",
+    "prompt-async": "^0.9.9"
   },
   "devDependencies": {
     "eslint": "^8.18.0",
