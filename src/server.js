@@ -2,15 +2,13 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 
+import { AuthRoutes } from './routes/index.js'
+
 const server = express()
 
 server.use(bodyParser.json())
 
-server.use((_, res) => {
-  res.json({
-    message: 'Hello World!',
-  })
-})
+server.use(AuthRoutes)
 
 const startServer = async () => {
   try {
