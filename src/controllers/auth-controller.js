@@ -2,9 +2,12 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../models/index.js'
+import { authSchema } from '../schemas/index.js'
 
 export const register = async (req, res) => {
   try {
+    await authSchema.validateAsync(req.body)
+
     const existingUser = await User.findOne({ username: req.body.username })
 
     if (existingUser) {
@@ -26,9 +29,14 @@ export const register = async (req, res) => {
       userId: response._id,
     })
   } catch (err) {
+    if (err.isJoi) {
+      err.statusCode = 422
+    }
+
     if (!err.statusCode) {
       err.statusCode = 500
     }
+
     res.status(err.statusCode).json({
       message: err.message,
     })
@@ -37,6 +45,8 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    await authSchema.validateAsync(req.body)
+
     const loadedUser = await User.findOne({ username: req.body.username })
     if (!loadedUser) {
       const error = new Error("User with this username doesn't exist.")
@@ -67,9 +77,14 @@ export const login = async (req, res) => {
       userId: loadedUser.id.toString(),
     })
   } catch (err) {
+    if (err.isJoi) {
+      err.statusCode = 422
+    }
+
     if (!err.statusCode) {
       err.statusCode = 500
     }
+
     res.status(err.statusCode).json({
       message: err.message,
     })
