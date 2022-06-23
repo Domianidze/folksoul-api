@@ -4,5 +4,8 @@
 # typescript
 dist
 
+#storage
+storage
+
 # env
 .env

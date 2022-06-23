@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+// @ts-ignore
 import prompt from 'prompt-async'
 import bcrypt from 'bcrypt'
 import 'dotenv/config'

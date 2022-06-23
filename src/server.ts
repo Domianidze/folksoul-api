@@ -5,13 +5,16 @@ import mongoose from 'mongoose'
 import 'dotenv/config'
 
 import { authRoutes, memberRoutes } from './routes'
-import { errorMiddleware } from './middleware'
+import { errorMiddleware, multerMiddleware } from './middleware'
 import { getMongoUrl } from './util'
 
 const server: Express = express()
 
-server.use('/public', express.static(path.join('public')));
 server.use(bodyParser.json())
+server.use(multerMiddleware)
+
+server.use('/public', express.static(path.join('public')));
+server.use('/storage', express.static(path.join('storage')));
 
 server.use(authRoutes)
 server.use(memberRoutes)
