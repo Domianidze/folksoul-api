@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
+import mongoose from 'mongoose'
 
 import { Member } from '../models'
 import { memberSchema } from '../schemas'
@@ -53,6 +54,31 @@ export const changeAvatar = async (req: Request, res: Response, next: NextFuncti
 
     res.status(200).json({
       message: 'Avatar changed successfully!',
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const editMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await memberSchema.validateAsync(req.body)
+
+    const member = await Member.findOneAndUpdate(
+      {
+        _id: new mongoose.Types.ObjectId(req.body.id),
+      },
+      req.body
+    )
+
+    if (!member) {
+      const error: ErrorType = new Error('No member found with this id')
+      error.statusCode = 404
+      throw error
+    }
+
+    res.status(201).json({
+      message: 'Member updated successfully!',
     })
   } catch (err) {
     next(err)
