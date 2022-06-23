@@ -17,6 +17,22 @@ export const getMembers = async (_: Request, res: Response, next: NextFunction) 
   }
 }
 
+export const getMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const member = await Member.findById(req.body.id).select('-__v')
+
+    if(!member) {
+      const error: ErrorType = new Error("Member with this id not found.")
+      error.statusCode = 404
+      throw error
+    }
+
+    res.json(member)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const addMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await memberSchema.validateAsync(req.body)
@@ -77,7 +93,7 @@ export const editMember = async (req: Request, res: Response, next: NextFunction
 
     const member = await Member.findOneAndUpdate(
       {
-        _id: new mongoose.Types.ObjectId(req.body.id),
+        _id: req.body.id
       },
       req.body
     )
