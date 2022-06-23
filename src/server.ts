@@ -1,13 +1,13 @@
-import express from 'express'
+import express, { Express } from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import 'dotenv/config'
 
-import { AuthRoutes } from './routes/index.js'
-import { errorMiddleware } from './middleware/index.js'
-import { getMongoUrl } from './util/index.js'
+import { AuthRoutes } from './routes'
+import { errorMiddleware } from './middleware'
+import { getMongoUrl } from './util'
 
-const server = express()
+const server: Express = express()
 
 server.use(bodyParser.json())
 

@@ -3,8 +3,9 @@ import prompt from 'prompt-async'
 import bcrypt from 'bcrypt'
 import 'dotenv/config'
 
-import { User } from '../models/index.js'
-import { getMongoUrl } from '../util/index.js'
+import { User } from '../models'
+import { getMongoUrl } from '../util'
+import { ErrorType } from '../types'
 
 const createUser = async () => {
   try {
@@ -29,7 +30,7 @@ const createUser = async () => {
 
     const existingUser = await User.findOne({ username })
     if (existingUser) {
-      const error = new Error('username is already taken')
+      const error: ErrorType = new Error('username is already taken')
       error.statusCode = 422
       throw error
     }

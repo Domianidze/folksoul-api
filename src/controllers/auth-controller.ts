@@ -1,17 +1,19 @@
+import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { User } from '../models/index.js'
-import { authSchema } from '../schemas/index.js'
+import { User } from '../models'
+import { authSchema } from '../schemas'
+import { ErrorType } from '../types'
 
-export const register = async (req, res, next) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await authSchema.validateAsync(req.body)
 
     const existingUser = await User.findOne({ username: req.body.username })
 
     if (existingUser) {
-      const error = new Error('Username is already taken.')
+      const error: ErrorType = new Error('Username is already taken.')
       error.statusCode = 422
       throw error
     }
@@ -32,13 +34,13 @@ export const register = async (req, res, next) => {
   }
 }
 
-export const login = async (req, res, next) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await authSchema.validateAsync(req.body)
 
     const loadedUser = await User.findOne({ username: req.body.username })
     if (!loadedUser) {
-      const error = new Error("User with this username doesn't exist.")
+      const error: ErrorType = new Error("User with this username doesn't exist.")
       error.statusCode = 404
       throw error
     }
@@ -47,7 +49,7 @@ export const login = async (req, res, next) => {
       loadedUser.password
     )
     if (!correctPassword) {
-      const error = new Error('Invalid Password')
+      const error: ErrorType = new Error('Invalid Password')
       error.statusCode = 401
       throw error
     }
