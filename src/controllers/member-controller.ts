@@ -7,6 +7,16 @@ import { memberSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
+export const getMembers = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const members = await Member.find().select('-__v')
+
+    res.json(members)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const addMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await memberSchema.validateAsync(req.body)

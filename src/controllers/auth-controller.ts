@@ -39,15 +39,18 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     await authSchema.validateAsync(req.body)
 
     const loadedUser = await User.findOne({ username: req.body.username })
+
     if (!loadedUser) {
       const error: ErrorType = new Error("User with this username doesn't exist.")
       error.statusCode = 404
       throw error
     }
+    
     const correctPassword = await bcrypt.compare(
       req.body.password,
       loadedUser.password
     )
+
     if (!correctPassword) {
       const error: ErrorType = new Error('Invalid Password')
       error.statusCode = 401
