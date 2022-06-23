@@ -5,13 +5,14 @@ import mongoose from 'mongoose'
 import { Member } from '../models'
 import { memberSchema } from '../schemas'
 import { ErrorType } from '../types'
+import { getDefaultImagePath, getImagePath } from '../util'
 
 export const addMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await memberSchema.validateAsync(req.body)
 
     if(!req.body.avatarUrl) {
-      req.body.avatarUrl = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/public/img/default-member.png`
+      req.body.avatarUrl = getDefaultImagePath()
     }
 
     const response = await Member.create(req.body)
@@ -44,7 +45,7 @@ export const changeAvatar = async (req: Request, res: Response, next: NextFuncti
     }
 
     if(member.avatarUrl) {
-      const path = member.avatarUrl.replace(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/`, '')
+      const path = getImagePath(member.avatarUrl)
       fs.unlinkSync(path)
     }
 
@@ -79,6 +80,29 @@ export const editMember = async (req: Request, res: Response, next: NextFunction
 
     res.status(201).json({
       message: 'Member updated successfully!',
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const deleteMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const member = await Member.findByIdAndRemove(req.body.id)
+
+    if (!member) {
+      const error: ErrorType = new Error('No member found with this id.')
+      error.statusCode = 404
+      throw error
+    }
+
+    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath()) {
+      const path = getImagePath(member.avatarUrl)
+      fs.unlinkSync(path)
+    }
+
+    res.status(200).json({
+      message: 'Member deleted successfully!',
     })
   } catch (err) {
     next(err)
