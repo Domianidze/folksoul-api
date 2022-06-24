@@ -1,7 +1,6 @@
 import Joi from 'joi'
 
 export default Joi.object({
-  id: Joi.string(),
   avatarUrl: Joi.string(),
   name: Joi.string().min(3).regex(/^[ა-ჰ]+$/).message('\"name\" must only contain georgian letters').required(),
   instrument: Joi.string().min(2).regex(/^[ა-ჰ]+$/).message('\"instrument\" must only contain georgian letters').required(),

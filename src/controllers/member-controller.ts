@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 
 import { Member } from '../models'
-import { memberSchema } from '../schemas'
+import { addMemberSchema, editMemberSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
@@ -34,7 +34,7 @@ export const getMember = async (req: Request, res: Response, next: NextFunction)
 
 export const addMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await memberSchema.validateAsync(req.body)
+    await addMemberSchema.validateAsync(req.body)
 
     if(!req.body.avatarUrl) {
       req.body.avatarUrl = getDefaultImagePath('member')
@@ -91,7 +91,7 @@ export const changeAvatar = async (req: Request, res: Response, next: NextFuncti
 
 export const editMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await memberSchema.validateAsync(req.body)
+    await editMemberSchema.validateAsync(req.body)
 
     const member = await Member.findOneAndUpdate(
       {

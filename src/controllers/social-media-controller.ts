@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 
 import { SocialMedia } from '../models'
-import { socialMediaSchema } from '../schemas'
+import { addSocialMediaSchema, editSocialMediaSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
 export const addSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await socialMediaSchema.validateAsync(req.body)
+    await addSocialMediaSchema.validateAsync(req.body)
 
     if(!req.body.iconUrl) {
       req.body.iconUrl = getDefaultImagePath('social-media')
@@ -57,6 +57,31 @@ export const changeIcon = async (req: Request, res: Response, next: NextFunction
 
     res.status(200).json({
       message: 'Icon changed successfully!',
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const editSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await editSocialMediaSchema.validateAsync(req.body)
+
+    const socialMedia = await SocialMedia.findOneAndUpdate(
+      {
+        _id: req.body.id
+      },
+      req.body
+    )
+
+    if (!socialMedia) {
+      const error: ErrorType = new Error('No social media found with this id')
+      error.statusCode = 404
+      throw error
+    }
+
+    res.status(201).json({
+      message: 'Social media updated successfully!',
     })
   } catch (err) {
     next(err)
