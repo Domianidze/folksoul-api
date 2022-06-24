@@ -87,3 +87,29 @@ export const editSocialMedia = async (req: Request, res: Response, next: NextFun
     next(err)
   }
 }
+
+export const deleteSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const socialMedia = await SocialMedia.findByIdAndRemove(req.body.id)
+
+    if (!socialMedia) {
+      const error: ErrorType = new Error('No social media found with this id.')
+      error.statusCode = 404
+      throw error
+    }
+
+    if(socialMedia.iconUrl && socialMedia.iconUrl !== getDefaultImagePath('social-media')) {
+      const path = getImagePath(socialMedia.iconUrl)
+
+      if(fs.existsSync(path)) {
+        fs.unlinkSync(path)
+      } 
+    }
+
+    res.status(200).json({
+      message: 'Social media deleted successfully!',
+    })
+  } catch (err) {
+    next(err)
+  }
+}
