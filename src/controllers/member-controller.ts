@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
-import mongoose from 'mongoose'
 
 import { Member } from '../models'
 import { memberSchema } from '../schemas'
@@ -70,9 +69,12 @@ export const changeAvatar = async (req: Request, res: Response, next: NextFuncti
       throw error
     }
 
-    if(member.avatarUrl) {
+    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath()) {
       const path = getImagePath(member.avatarUrl)
-      fs.unlinkSync(path)
+
+      if(fs.existsSync(path)) {
+        fs.unlinkSync(path)
+      } 
     }
 
     member.avatarUrl = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/${req.file.path}`
@@ -124,7 +126,10 @@ export const deleteMember = async (req: Request, res: Response, next: NextFuncti
 
     if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath()) {
       const path = getImagePath(member.avatarUrl)
-      fs.unlinkSync(path)
+
+      if(fs.existsSync(path)) {
+        fs.unlinkSync(path)
+      } 
     }
 
     res.status(200).json({

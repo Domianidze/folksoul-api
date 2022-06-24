@@ -1,9 +1,16 @@
 import { Request } from "express";
+import fs from 'fs'
 import multer, { FileFilterCallback  } from "multer";
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
-        cb(null, 'storage/img')
+        const path = 'storage/img';
+
+        if(!fs.existsSync(path)) {
+            fs.mkdirSync(path, { recursive: true, })
+        } 
+
+        cb(null, path)
     },
     filename: (_, file, cb) => {
         cb(null, `${new Date().toISOString()}-${file.originalname}`)

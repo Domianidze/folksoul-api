@@ -12,7 +12,6 @@ const server: Express = express()
 
 server.use(bodyParser.json())
 server.use(multerMiddleware)
-
 server.use('/public', express.static(path.join('public')));
 server.use('/storage', express.static(path.join('storage')));
 
