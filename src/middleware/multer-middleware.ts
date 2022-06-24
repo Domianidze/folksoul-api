@@ -25,4 +25,4 @@ const fileFilter = (_: Request, file: Express.Multer.File, cb: FileFilterCallbac
     }
 }   
 
-export default multer({storage, fileFilter}).single('avatar')
+export default multer({storage, fileFilter}).single('image')
