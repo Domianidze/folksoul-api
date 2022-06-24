@@ -6,6 +6,16 @@ import { addSocialMediaSchema, editSocialMediaSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
+export const getSocialMedias = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const socialMedias = await SocialMedia.find().select('-__v')
+
+    res.json(socialMedias)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const addSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await addSocialMediaSchema.validateAsync(req.body)
@@ -90,7 +100,7 @@ export const editSocialMedia = async (req: Request, res: Response, next: NextFun
 
 export const deleteSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const socialMedia = await SocialMedia.findByIdAndRemove(req.body.id)
+    const socialMedia = await SocialMedia.findByIdAndRemove(req.body.id)  
 
     if (!socialMedia) {
       const error: ErrorType = new Error('No social media found with this id.')
