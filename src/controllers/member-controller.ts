@@ -37,7 +37,7 @@ export const addMember = async (req: Request, res: Response, next: NextFunction)
     await memberSchema.validateAsync(req.body)
 
     if(!req.body.avatarUrl) {
-      req.body.avatarUrl = getDefaultImagePath()
+      req.body.avatarUrl = getDefaultImagePath('member')
     }
 
     const response = await Member.create(req.body)
@@ -69,7 +69,7 @@ export const changeAvatar = async (req: Request, res: Response, next: NextFuncti
       throw error
     }
 
-    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath()) {
+    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath('member')) {
       const path = getImagePath(member.avatarUrl)
 
       if(fs.existsSync(path)) {
@@ -124,7 +124,7 @@ export const deleteMember = async (req: Request, res: Response, next: NextFuncti
       throw error
     }
 
-    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath()) {
+    if(member.avatarUrl && member.avatarUrl !== getDefaultImagePath('member')) {
       const path = getImagePath(member.avatarUrl)
 
       if(fs.existsSync(path)) {

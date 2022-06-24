@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import 'dotenv/config'
 
-import { authRoutes, memberRoutes } from './routes'
+import { authRoutes, memberRoutes, socialMediaRoutes } from './routes'
 import { errorMiddleware, multerMiddleware } from './middleware'
 import { getMongoUrl } from './util'
 
@@ -17,6 +17,7 @@ server.use('/storage', express.static(path.join('storage')));
 
 server.use(authRoutes)
 server.use(memberRoutes)
+server.use(socialMediaRoutes)
 
 server.use(errorMiddleware)
 
