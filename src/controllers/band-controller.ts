@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 
 import { Band } from '../models'
+import { setInformationSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
@@ -37,6 +38,26 @@ export const setLogo = async (req: Request, res: Response, next: NextFunction) =
 
     res.status(200).json({
       message: 'Logo set successfully!',
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const setInformation = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await setInformationSchema.validateAsync(req.body)
+
+    const band = await Band.findOneAndUpdate(req.body)
+
+    if (!band) {
+      const error: ErrorType = new Error('Band not found.')
+      error.statusCode = 404
+      throw error
+    }
+
+    res.status(201).json({
+      message: 'Information set successfully!',
     })
   } catch (err) {
     next(err)
