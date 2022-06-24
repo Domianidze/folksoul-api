@@ -5,9 +5,11 @@ const { Schema } = mongoose
 const bandSchema = new Schema({
     logoUrl: {
         type: String,
+        required: true,
     },
     information: {
         type: String,
+        required: true,
     }
 }, {
     collection: 'band',
