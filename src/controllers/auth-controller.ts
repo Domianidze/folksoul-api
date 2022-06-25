@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     )
 
     if (!correctPassword) {
-      const error: ErrorType = new Error('Invalid Password')
+      const error: ErrorType = new Error('Invalid password.')
       error.statusCode = 401
       throw error
     }
