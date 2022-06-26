@@ -1,0 +1,780 @@
+openapi: 3.0.0
+info:
+  title: Inside Joke API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: local server
+  - url: 
+    description: production server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /register:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            example:
+                username: testuser
+                password: test123
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+      responses:
+        '201':
+          description: Registered successfully!
+          content:
+            application/json:
+              example:
+                message: Registered successfully!
+                userId: '62a48d48d2c36b37241a8f5b'
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+                  userId:
+                    type: string
+                    required: true
+        '422':
+          description: Username is already taken!
+          content:
+            application/json:
+              example:
+                message: Username is already taken!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /login:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            example:
+                username: testuser
+                password: test123
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+      responses:
+        '200':
+          description: Logged in successfully!
+          content:
+            application/json:
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJ1c2VySWQiOiI2MmE0OGQ0OGQyYzM2YjM3MjQxYThmNWIiLCJpYXQiOjE2NTUyMzIzMjQsImV4cCI6MTY1NTIzNTkyNH0.VG9OmL4PLbeR2oGMTmhAFd09Sn4OTmaC6T9sXiwWXdA
+                userId: '62a48d48d2c36b37241a8f5b'
+                expiresIn: 1h
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    required: true
+                  userId:
+                    type: string
+                    required: true
+                  expiresIn:
+                    type: string
+                    required: true
+        '401':
+          description: Invalid password.
+          content:
+            application/json:
+              example:
+                message: Invalid password.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: User with this username doesn't exist.
+          content:
+            application/json:
+              example:
+                message: User with this username doesn't exist.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /get-members:
+    get:
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Get members successfully!
+          content:
+            application/json:
+              example:
+                  - _id: 62b842585e2125b9104478db
+                    avatarUrl: http://localhost:8080/public/img/default-member.png
+                    name: გელა
+                    instrument: გიტარა
+                    orbitWidth: 32
+                    color: "#EB5757"
+                    biography: გიტარისტი გელა.
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      required: true
+                    avatarUrl:
+                      type: string
+                      required: true
+                    instrument:
+                      type: string
+                      required: true
+                    orbitWidth:
+                      type: number
+                      required: true
+                    color:
+                      type: string
+                      required: true
+                    biography:
+                      type: string
+                      required: true
+  /get-member:
+    post:
+      tags:
+        - Member
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b842585e2125b9104478db
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true
+      responses:
+        '200':
+          description: Get member successfully!
+          content:
+            application/json:
+              example:
+                _id: 62b842585e2125b9104478db
+                avatarUrl: http://localhost:8080/public/img/default-member.png
+                name: გელა
+                instrument: გიტარა
+                orbitWidth: 32
+                color: "#EB5757"
+                biography: გიტარისტი გელა.
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    required: true
+                  avatarUrl:
+                    type: string
+                    required: true
+                  instrument:
+                    type: string
+                    required: true
+                  orbitWidth:
+                    type: number
+                    required: true
+                  color:
+                    type: string
+                    required: true
+                  biography:
+                    type: string
+                    required: true
+        '404':
+          description: No member found with this id.
+          content:
+            application/json:
+              example:
+                message: No member found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /add-member:
+    post:
+      tags:
+        - Member
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: გელა
+              instrument: გიტარა
+              orbitWidth:  32
+              color: "#EB5757"
+              biography: გიტარისტი გელა.
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                instrument:
+                  type: string
+                  required: true
+                orbitWidth:
+                  type: number
+                  required: true
+                color:
+                  type: string
+                  required: true
+                biography:
+                  type: string
+                  required: true
+      responses:
+        '201':
+          description: Member created successfully!
+          content:
+            application/json:
+              example:
+                message: Member created successfully!
+                memberId: 62b842585e2125b9104478db
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+                  memberId:
+                    type: string
+                    required: true
+  /change-member-avatar:
+    put:
+      tags:
+        - Member
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                memberId:
+                  type: string
+                image:
+                  type: file
+              required:
+              - memberId
+              - image
+      responses:
+        '200':
+          description: Avatar changed successfully!
+          content:
+            application/json:
+              example:
+                message: Avatar changed successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Proper image is required.
+          content:
+            application/json:
+              example:
+                message: Proper image is required.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: Member with this id not found.
+          content:
+            application/json:
+              example:
+                message: Member with this id not found.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /edit-member:
+    put:
+      tags:
+        - Member
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b842585e2125b9104478db
+              name: გელა
+              instrument: დოლი
+              orbitWidth:  32
+              color: "#EB5757"
+              biography: მედოლე გელა.
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true
+                name:
+                  type: string
+                instrument:
+                  type: string
+                orbitWidth:
+                  type: number
+                color:
+                  type: string
+                biography:
+                  type: string
+      responses:
+        '201':
+          description: Member updated successfully!
+          content:
+            application/json:
+              example:
+                message: Member updated successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: No member found with this id.
+          content:
+            application/json:
+              example:
+                message: No member found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /delete-member:
+    delete:
+      tags:
+        - Member
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b842585e2125b9104478db
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true
+      responses:
+        '200':
+          description: 'Member deleted successfully!'
+          content:
+            application/json:
+              example:
+                message: Member deleted successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: No member found with this id.
+          content:
+            application/json:
+              example:
+                message: No member found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /get-social-medias:
+    get:
+      tags:
+        - Social Media
+      responses:
+        '200':
+          description: Get social medias successfully!
+          content:
+            application/json:
+              example:
+                  - _id: 62b84a06d6377ab6190cea93
+                    iconUrl: http://localhost:8080/public/img/default-social-media.png
+                    name: Twitter
+                    link: https://twitter.com/
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      required: true
+                    iconUrl:
+                      type: string
+                      required: true
+                    name:
+                      type: string
+                      required: true
+                    link:
+                      type: string
+                      required: true
+  /add-social-media:
+    post:
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: Twitter
+              link: https://twitter.com/
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                link:
+                  type: string
+                  required: true
+      responses:
+        '201':
+          description: Social media created successfully!
+          content:
+            application/json:
+              example:
+                message: Social media created successfully!
+                socialMediaId: 62b84a06d6377ab6190cea93
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+                  socialMediaId:
+                    type: string
+                    required: true
+  /change-social-media-icon:
+    put:
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                socialMediaId:
+                  type: string
+                image:
+                  type: file
+              required:
+              - memberId
+              - image
+      responses:
+        '200':
+          description: Icon changed successfully!
+          content:
+            application/json:
+              example:
+                message: Icon changed successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Proper image is required.
+          content:
+            application/json:
+              example:
+                message: Proper image is required.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: Social media with this id not found.
+          content:
+            application/json:
+              example:
+                message: Social media with this id not found.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /edit-social-media:
+    put:
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b84a06d6377ab6190cea93
+              name: Facebook
+              link: https://facebook.com/
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true,
+                name:
+                  type: string
+                link:
+                  type: string
+      responses:
+        '201':
+          description: Social media updated successfully!
+          content:
+            application/json:
+              example:
+                message: Social media updated successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: No social media found with this id.
+          content:
+            application/json:
+              example:
+                message: No social media found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /delete-social-media:
+    delete:
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b84a06d6377ab6190cea93
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true
+      responses:
+        '200':
+          description: 'Social media deleted successfully!'
+          content:
+            application/json:
+              example:
+                message: Social media deleted successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: No social media found with this id.
+          content:
+            application/json:
+              example:
+                message: No social media found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /get-band-data:
+    get:
+      tags:
+        - Band
+      responses:
+        '200':
+          description: Get band data successfully!
+          content:
+            application/json:
+              example:       
+                logoUrl: http://localhost:8080/storage/img/2022-06-24T19:23:31.884Z-default-mem…
+                information: ბენდი რომელშიც უკრავს გიტარისტი გელა
+              schema:
+                type: object
+                properties:
+                  logoUrl:
+                    type: string
+                    required: true
+                  information:
+                    type: string
+                    required: true
+        '404':
+          description: Band not found.
+          content:
+            application/json:
+              example:
+                message: Band not found.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        
+  /set-band-logo:
+    put:
+      tags:
+        - Band
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: file
+              required:
+              - image
+      responses:
+        '201':
+          description: Logo set successfully!
+          content:
+            application/json:
+              example:
+                message: Logo set successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Proper image is required.
+          content:
+            application/json:
+              example:
+                message: Proper image is required.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: Band not found.
+          content:
+            application/json:
+              example:
+                message: Band not found.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+  /set-band-information:
+    put:
+      tags:
+        - Band
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              information: ბენდი რომელშიც უკრავს გელა.
+            schema:
+              type: object
+              properties:
+                information:
+                  type: string
+                  required: true
+      responses:
+        '201':
+          description: Information set successfully!
+          content:
+            application/json:
+              example:
+                message: Information set successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '404':
+          description: Band not found.
+          content:
+            application/json:
+              example:
+                message: Band not found.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true

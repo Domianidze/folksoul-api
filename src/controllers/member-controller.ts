@@ -51,7 +51,7 @@ export const addMember = async (req: Request, res: Response, next: NextFunction)
   }
 }
 
-export const changeAvatar = async (req: Request, res: Response, next: NextFunction) => {
+export const changeMemberAvatar = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const member = await Member.findById(req.body.memberId)
 

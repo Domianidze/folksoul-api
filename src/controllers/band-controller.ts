@@ -6,7 +6,23 @@ import { setInformationSchema } from '../schemas'
 import { ErrorType } from '../types'
 import { getDefaultImagePath, getImagePath } from '../util'
 
-export const setLogo = async (req: Request, res: Response, next: NextFunction) => {
+export const getBandData = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const band = await Band.findOne().select('-_id -__v')
+
+    if(!band) {
+      const error: ErrorType = new Error("Band not found.")
+      error.statusCode = 404
+      throw error
+    }
+
+    res.json(band)
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const setBandLogo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const band = await Band.findOne()
 
@@ -36,7 +52,7 @@ export const setLogo = async (req: Request, res: Response, next: NextFunction) =
 
     await band.save()
 
-    res.status(200).json({
+    res.status(201).json({
       message: 'Logo set successfully!',
     })
   } catch (err) {
@@ -44,7 +60,7 @@ export const setLogo = async (req: Request, res: Response, next: NextFunction) =
   }
 }
 
-export const setInformation = async (req: Request, res: Response, next: NextFunction) => {
+export const setBandInformation = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await setInformationSchema.validateAsync(req.body)
 

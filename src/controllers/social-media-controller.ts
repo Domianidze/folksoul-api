@@ -28,14 +28,14 @@ export const addSocialMedia = async (req: Request, res: Response, next: NextFunc
 
     res.status(201).json({
       message: 'Social Media added successfully!',
-      memberId: response._id,
+      socialMediaId: response._id,
     })
   } catch (err) {
     next(err)
   }
 }
 
-export const changeIcon = async (req: Request, res: Response, next: NextFunction) => {
+export const changeSocialMediaIcon = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const socialMedia = await SocialMedia.findById(req.body.socialMediaId)
 

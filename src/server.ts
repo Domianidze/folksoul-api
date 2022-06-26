@@ -2,10 +2,11 @@ import express, { Express } from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import SwaggerUI from 'swagger-ui-express'
 import 'dotenv/config'
 
 import { authRoutes, memberRoutes, socialMediaRoutes, bandRoutes } from './routes'
-import { corsMiddleware, authMiddleware, errorMiddleware, multerMiddleware } from './middleware'
+import { corsMiddleware, errorMiddleware, multerMiddleware, swaggerMiddleware } from './middleware'
 import { getMongoUrl } from './util'
 
 const server: Express = express()
@@ -17,10 +18,12 @@ server.use('/storage', express.static(path.join('storage')));
 
 server.use(corsMiddleware)
 
+server.use('/api-docs', SwaggerUI.serve, swaggerMiddleware())
+
 server.use(authRoutes)
 server.use(memberRoutes)
 server.use(socialMediaRoutes)
-server.use(authMiddleware, bandRoutes)
+server.use(bandRoutes)
 
 server.use(errorMiddleware)
 
