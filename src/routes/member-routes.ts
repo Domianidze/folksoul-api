@@ -6,9 +6,9 @@ import { authMiddleware } from '../middleware'
 const Router = express.Router()
 
 Router.get('/get-members', getMembers)
-Router.get('/get-member', getMember)
+Router.post('/get-member', getMember)
 Router.post('/add-member', authMiddleware, addMember)
-Router.put('/change-avatar', authMiddleware, changeMemberAvatar)
+Router.put('/change-member-avatar', authMiddleware, changeMemberAvatar)
 Router.put('/edit-member', authMiddleware, editMember)
 Router.delete('/delete-member', authMiddleware, deleteMember)
 
