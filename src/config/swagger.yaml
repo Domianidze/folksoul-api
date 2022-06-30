@@ -465,6 +465,58 @@ paths:
                     link:
                       type: string
                       required: true
+  /get-social-media:
+    post:
+      tags:
+        - Social Media
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 62b84a06d6377ab6190cea93
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  required: true
+      responses:
+        '200':
+          description: Get social media successfully!
+          content:
+            application/json:
+              example:
+                  _id: 62b84a06d6377ab6190cea93
+                  iconUrl: http://localhost:8080/public/img/default-social-media.png
+                  name: Twitter
+                  link: https://twitter.com/
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    required: true
+                  iconUrl:
+                    type: string
+                    required: true
+                  name:
+                    type: string
+                    required: true
+                  link:
+                    type: string
+                    required: true
+        '404':
+          description: No social media found with this id.
+          content:
+            application/json:
+              example:
+                message: No social media found with this id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
   /add-social-media:
     post:
       tags:

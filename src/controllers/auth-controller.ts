@@ -61,15 +61,16 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       {
         username: loadedUser.username,
         userId: loadedUser.id.toString(),
-        expiresIn: '1h',
+        expiresIn: process.env.JWT_EXPIRES_IN,
       },
       '~5N2wZsiGkP;l_+BeK*{>)y"))C[fM',
-      { expiresIn: '1h' }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     )
 
     res.status(200).json({
       token,
       userId: loadedUser.id.toString(),
+      expiresIn: process.env.JWT_EXPIRES_IN,
     })
   } catch (err) {
     next(err)

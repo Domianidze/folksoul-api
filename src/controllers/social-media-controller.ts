@@ -16,6 +16,22 @@ export const getSocialMedias = async (_: Request, res: Response, next: NextFunct
   }
 }
 
+export const getSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const socialMedia = await SocialMedia.findById(req.body.id).select('-__v')
+
+    if(!socialMedia) {
+      const error: ErrorType = new Error("Social media with this id not found.")
+      error.statusCode = 404
+      throw error
+    }
+
+    res.json(socialMedia)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const addSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await addSocialMediaSchema.validateAsync(req.body)
