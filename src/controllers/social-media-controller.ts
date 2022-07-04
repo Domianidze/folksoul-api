@@ -4,7 +4,7 @@ import fs from 'fs'
 import { SocialMedia } from '../models'
 import { addSocialMediaSchema, editSocialMediaSchema } from '../schemas'
 import { ErrorType } from '../types'
-import { getDefaultImagePath, getImagePath } from '../util'
+import { getApiUrl, getDefaultImagePath, getImagePath } from '../util'
 
 export const getSocialMedias = async (_: Request, res: Response, next: NextFunction) => {
   try {
@@ -62,7 +62,7 @@ export const changeSocialMediaIcon = async (req: Request, res: Response, next: N
     }
 
     if (!socialMedia) {
-      fs.unlinkSync(req.file.path)
+      await fs.promises.unlink(req.file.path)
       
       const error: ErrorType = new Error("Social media with this id not found.")
       error.statusCode = 404
@@ -73,11 +73,11 @@ export const changeSocialMediaIcon = async (req: Request, res: Response, next: N
       const path = getImagePath(socialMedia.iconUrl)
 
       if(fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink(path)
       } 
     }
 
-    socialMedia.iconUrl = `http://${process.env.SERVER_HOST_NAME}:${process.env.SERVER_PORT}/${req.file.path}`
+    socialMedia.iconUrl = `${getApiUrl()}/${req.file.path}`
 
     await socialMedia.save()
 
@@ -128,7 +128,7 @@ export const deleteSocialMedia = async (req: Request, res: Response, next: NextF
       const path = getImagePath(socialMedia.iconUrl)
 
       if(fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink(path)
       } 
     }
 

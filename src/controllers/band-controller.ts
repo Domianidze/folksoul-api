@@ -4,7 +4,7 @@ import fs from 'fs'
 import { Band } from '../models'
 import { setInformationSchema } from '../schemas'
 import { ErrorType } from '../types'
-import { getDefaultImagePath, getImagePath } from '../util'
+import { getApiUrl, getDefaultImagePath, getImagePath } from '../util'
 
 export const getBandData = async (_: Request, res: Response, next: NextFunction) => {
   try {
@@ -33,7 +33,7 @@ export const setBandLogo = async (req: Request, res: Response, next: NextFunctio
     }
 
     if(!band) {
-      fs.unlinkSync(req.file.path)
+      await fs.promises.unlink(req.file.path)
 
       const error: ErrorType = new Error("Band not found.")
       error.statusCode = 404
@@ -44,11 +44,11 @@ export const setBandLogo = async (req: Request, res: Response, next: NextFunctio
       const path = getImagePath(band.logoUrl)
 
       if(fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink(path)
       } 
     }
 
-    band.logoUrl = `http://${process.env.SERVER_HOST_NAME}:${process.env.SERVER_PORT}/${req.file.path}`
+    band.logoUrl = `${getApiUrl()}/${req.file.path}`
 
     await band.save()
 

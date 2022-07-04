@@ -8,9 +8,15 @@ const createBand = async () => {
   try {
     const database = await mongoose.connect(getMongoUrl())
 
+    const band = await Band.findOne()
+
+    if(band) {
+      throw new Error('band already exists')
+    }
+
     await Band.create({
         logoUrl: getDefaultImagePath('band'),
-        information: 'No information yet.'
+        information: 'ინფორმაცია ჯერ–ჯერობით არ არის.'
     })
     
     console.log('band created successfully')

@@ -3,12 +3,12 @@ import fs from 'fs'
 import multer, { FileFilterCallback  } from "multer";
 
 const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
+    destination: async (_, __, cb) => {
         const path = 'storage/img';
 
         if(!fs.existsSync(path)) {
-            fs.mkdirSync(path, { recursive: true, })
-        } 
+            await fs.promises.mkdir(path, { recursive: true, })
+        }
 
         cb(null, path)
     },

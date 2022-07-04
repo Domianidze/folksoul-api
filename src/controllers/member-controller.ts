@@ -4,7 +4,7 @@ import fs from 'fs'
 import { Member } from '../models'
 import { addMemberSchema, editMemberSchema } from '../schemas'
 import { ErrorType } from '../types'
-import { getDefaultImagePath, getImagePath } from '../util'
+import { getApiUrl, getDefaultImagePath, getImagePath } from '../util'
 
 export const getMembers = async (_: Request, res: Response, next: NextFunction) => {
   try {
@@ -62,7 +62,7 @@ export const changeMemberAvatar = async (req: Request, res: Response, next: Next
     }
 
     if (!member) {
-      fs.unlinkSync(req.file.path)
+      await fs.promises.unlink(req.file.path)
       
       const error: ErrorType = new Error("Member with this id not found.")
       error.statusCode = 404
@@ -73,11 +73,11 @@ export const changeMemberAvatar = async (req: Request, res: Response, next: Next
       const path = getImagePath(member.avatarUrl)
 
       if(fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink (path)
       } 
     }
 
-    member.avatarUrl = `http://${process.env.SERVER_HOST_NAME}:${process.env.SERVER_PORT}/${req.file.path}`
+    member.avatarUrl = `${getApiUrl()}/${req.file.path}`
 
     await member.save()
 
@@ -128,7 +128,7 @@ export const deleteMember = async (req: Request, res: Response, next: NextFuncti
       const path = getImagePath(member.avatarUrl)
 
       if(fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink(path)
       } 
     }
 
