@@ -30,7 +30,7 @@ server.use(errorMiddleware)
 const startServer = async () => {
   try {
     await mongoose.connect(getMongoUrl())
-    server.listen(8080)
+    server.listen(process.env.SERVER_PORT)
   } catch (err) {
     console.error(err)
   }

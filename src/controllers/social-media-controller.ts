@@ -77,7 +77,7 @@ export const changeSocialMediaIcon = async (req: Request, res: Response, next: N
       } 
     }
 
-    socialMedia.iconUrl = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/${req.file.path}`
+    socialMedia.iconUrl = `http://${process.env.SERVER_HOST_NAME}:${process.env.SERVER_PORT}/${req.file.path}`
 
     await socialMedia.save()
 

@@ -1,6 +1,6 @@
 ## Inside Joke Api
  
-An api made for a musical band Inside Joke.
+An api made for a musical band Inside Joke. You can visit the production version [here!](https://inside-joke-api.sandro.redberryinternship.ge/)
 
 ### Table of Contents
 
@@ -26,7 +26,7 @@ An api made for a musical band Inside Joke.
 
 1\. First of all clone the repository from github:
 ```sh
-git clone https://github.com/Domianidze/inside-joke-api.git
+git clone https://github.com/RedberryInternship/inside-joke-api-Domianidze.git
 ```
 
 2\. Secondly install all the dependencies:
@@ -46,12 +46,24 @@ npm run band:create
 
 5\. And lastly start the dev server:
 ```sh
-npm start
+npm run dev
 ```
 
 You can also create an user if needed:
 ```sh
 npm run user:create
+```
+
+### Deployment
+
+1\. First build the production version:
+```sh
+npm run build:prod
+```
+
+2\. Then start the server:
+```sh
+npm start
 ```
 
 ### Project Structure

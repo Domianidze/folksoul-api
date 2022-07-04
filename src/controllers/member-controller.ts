@@ -77,7 +77,7 @@ export const changeMemberAvatar = async (req: Request, res: Response, next: Next
       } 
     }
 
-    member.avatarUrl = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/${req.file.path}`
+    member.avatarUrl = `http://${process.env.SERVER_HOST_NAME}:${process.env.SERVER_PORT}/${req.file.path}`
 
     await member.save()
 
