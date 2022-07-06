@@ -1,6 +1,6 @@
-## Inside Joke Api
+## Folksoul Api
  
-An api made for a musical band Inside Joke. You can visit the production version [here!](https://inside-joke-api.sandro.redberryinternship.ge/)
+An api made for a musical band Folksoul. You can visit the production version [here!](https://folksoul-api.sandro.redberryinternship.ge/)
 
 ### Table of Contents
 
@@ -26,7 +26,7 @@ An api made for a musical band Inside Joke. You can visit the production version
 
 1\. First of all clone the repository from github:
 ```sh
-git clone https://github.com/RedberryInternship/inside-joke-api-Domianidze.git
+git clone https://github.com/RedberryInternship/folksoul-api-Domianidze.git
 ```
 
 2\. Secondly install all the dependencies:
@@ -111,6 +111,6 @@ npm start
 
 ### Resources
 
-*  [Project Details](https://redberry.gitbook.io/assignment-iii-inside-joke/)
+*  [Project Details](https://redberry.gitbook.io/assignment-iii-folksoul/)
 *  [Git Commit Rules](https://redberry.gitbook.io/resources/git-is-semantikuri-komitebi)
 

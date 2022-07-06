@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  title: Inside Joke API
+  title: Folksoul API
   version: 1.0.0
 
 servers:
-  - url: https://inside-joke-api.sandro.redberryinternship.ge 
+  - url: https://folksoul-api.sandro.redberryinternship.ge 
     description: production server
   - url: http://localhost:8080
     description: local server

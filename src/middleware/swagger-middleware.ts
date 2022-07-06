@@ -4,7 +4,7 @@ import YAML from 'yamljs'
 export default () => {
   const options = {
     customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'Inside Joke API Specs',
+    customSiteTitle: 'Folksoul API Specs',
   }
 
   const swaggerDocument = YAML.load('./src/config/swagger.yaml')

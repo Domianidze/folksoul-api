@@ -1,5 +1,5 @@
 {
-  "name": "inside-joke-api",
+  "name": "folksoul-api",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Domianidze/inside-joke-api.git"
+    "url": "git+https://github.com/Domianidze/folksoul-api.git"
   },
   "author": "Sandro Domianidze",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Domianidze/inside-joke-api/issues"
+    "url": "https://github.com/Domianidze/folksoul-api/issues"
   },
-  "homepage": "https://github.com/Domianidze/inside-joke-api#readme",
+  "homepage": "https://github.com/Domianidze/folksoul-api#readme",
   "dependencies": {
     "@faker-js/faker": "^7.3.0",
     "@types/bcrypt": "^5.0.0",
