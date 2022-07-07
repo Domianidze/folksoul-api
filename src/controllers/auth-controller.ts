@@ -41,7 +41,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const loadedUser = await User.findOne({ username: req.body.username })
 
     if (!loadedUser) {
-      const error: ErrorType = new Error("User with this username doesn't exist.")
+      const error: ErrorType = new Error("Invalid credentials.")
       error.statusCode = 404
       throw error
     }
@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     )
 
     if (!correctPassword) {
-      const error: ErrorType = new Error('Invalid password.')
+      const error: ErrorType = new Error('Invalid credentials.')
       error.statusCode = 401
       throw error
     }
