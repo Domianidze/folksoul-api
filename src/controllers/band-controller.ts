@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 
-import { Band } from '../models'
-import { setInformationSchema } from '../schemas'
-import { ErrorType } from '../types'
-import { getApiUrl, getDefaultImagePath, getImagePath } from '../util'
+import { Band } from 'models'
+import { setInformationSchema } from 'schemas'
+import { ErrorType } from 'types'
+import { getApiUrl, getDefaultImagePath, getImagePath } from 'util'
 
 export const getBandData = async (_: Request, res: Response, next: NextFunction) => {
   try {
@@ -52,7 +52,7 @@ export const setBandLogo = async (req: Request, res: Response, next: NextFunctio
 
     await band.save()
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Logo set successfully!',
     })
   } catch (err) {
@@ -72,7 +72,7 @@ export const setBandInformation = async (req: Request, res: Response, next: Next
       throw error
     }
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Information set successfully!',
     })
   } catch (err) {

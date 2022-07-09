@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 
-import { SocialMedia } from '../models'
-import { addSocialMediaSchema, editSocialMediaSchema } from '../schemas'
-import { ErrorType } from '../types'
-import { getApiUrl, getDefaultImagePath, getImagePath } from '../util'
+import { SocialMedia } from 'models'
+import { addSocialMediaSchema, editSocialMediaSchema } from 'schemas'
+import { ErrorType } from 'types'
+import { getApiUrl, getDefaultImagePath, getImagePath } from 'util'
 
 export const getSocialMedias = async (_: Request, res: Response, next: NextFunction) => {
   try {
@@ -18,7 +18,13 @@ export const getSocialMedias = async (_: Request, res: Response, next: NextFunct
 
 export const getSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const socialMedia = await SocialMedia.findById(req.body.id).select('-__v')
+    if(!req.params.id.match(/^[a-f\d]{24}$/i)) {
+      const error: ErrorType = new Error("Invalid id.")
+      error.statusCode = 422
+      throw error
+    }
+
+    const socialMedia = await SocialMedia.findById(req.params.id).select('-__v')
 
     if(!socialMedia) {
       const error: ErrorType = new Error("Social media with this id not found.")
@@ -53,6 +59,12 @@ export const addSocialMedia = async (req: Request, res: Response, next: NextFunc
 
 export const changeSocialMediaIcon = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if(!req.body.socialMediaId.match(/^[a-f\d]{24}$/i)) {
+      const error: ErrorType = new Error("Invalid id.")
+      error.statusCode = 422
+      throw error
+    }
+
     const socialMedia = await SocialMedia.findById(req.body.socialMediaId)
 
     if(!req.file) {
@@ -93,6 +105,12 @@ export const editSocialMedia = async (req: Request, res: Response, next: NextFun
   try {
     await editSocialMediaSchema.validateAsync(req.body)
 
+    if(!req.body.id.match(/^[a-f\d]{24}$/i)) {
+      const error: ErrorType = new Error("Invalid id.")
+      error.statusCode = 422
+      throw error
+    }
+
     const socialMedia = await SocialMedia.findOneAndUpdate(
       {
         _id: req.body.id
@@ -106,7 +124,7 @@ export const editSocialMedia = async (req: Request, res: Response, next: NextFun
       throw error
     }
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Social media updated successfully!',
     })
   } catch (err) {
@@ -116,6 +134,12 @@ export const editSocialMedia = async (req: Request, res: Response, next: NextFun
 
 export const deleteSocialMedia = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if(!req.body.id.match(/^[a-f\d]{24}$/i)) {
+      const error: ErrorType = new Error("Invalid id.")
+      error.statusCode = 422
+      throw error
+    }
+
     const socialMedia = await SocialMedia.findByIdAndRemove(req.body.id)  
 
     if (!socialMedia) {

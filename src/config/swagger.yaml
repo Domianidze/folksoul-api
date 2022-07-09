@@ -104,31 +104,19 @@ paths:
                   expiresIn:
                     type: string
                     required: true
-        '401':
-          description: Invalid password.
+        '422':
+          description: Invalid credentials.
           content:
             application/json:
               example:
-                message: Invalid password.
+                message: Invalid credentials.
               schema:
                 type: object
                 properties:
                   message:
                     type: string
                     required: true
-        '404':
-          description: User with this username doesn't exist.
-          content:
-            application/json:
-              example:
-                message: User with this username doesn't exist.
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    required: true
-  /get-members:
+  /members:
     get:
       tags:
         - Member
@@ -168,21 +156,16 @@ paths:
                     biography:
                       type: string
                       required: true
-  /get-member:
-    post:
+  /member/{id}:
+    get:
       tags:
         - Member
-      requestBody:
-        content:
-          application/json:
-            example:
-              id: 62b842585e2125b9104478db
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  required: true
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       responses:
         '200':
           description: Get member successfully!
@@ -312,6 +295,18 @@ paths:
                     type: string
                     required: true
         '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
           description: Proper image is required.
           content:
             application/json:
@@ -368,7 +363,7 @@ paths:
                 biography:
                   type: string
       responses:
-        '201':
+        '2oo':
           description: Member updated successfully!
           content:
             application/json:
@@ -434,7 +429,7 @@ paths:
                   message:
                     type: string
                     required: true
-  /get-social-medias:
+  /social-medias:
     get:
       tags:
         - Social Media
@@ -465,21 +460,16 @@ paths:
                     link:
                       type: string
                       required: true
-  /get-social-media:
-    post:
+  /social-media/{id}:
+    get:
       tags:
         - Social Media
-      requestBody:
-        content:
-          application/json:
-            example:
-              id: 62b84a06d6377ab6190cea93
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  required: true
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       responses:
         '200':
           description: Get social media successfully!
@@ -572,7 +562,7 @@ paths:
                 image:
                   type: file
               required:
-              - memberId
+              - socialMediaId
               - image
       responses:
         '200':
@@ -581,6 +571,18 @@ paths:
             application/json:
               example:
                 message: Icon changed successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
               schema:
                 type: object
                 properties:
@@ -635,12 +637,24 @@ paths:
                 link:
                   type: string
       responses:
-        '201':
+        '200':
           description: Social media updated successfully!
           content:
             application/json:
               example:
                 message: Social media updated successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
               schema:
                 type: object
                 properties:
@@ -689,6 +703,18 @@ paths:
                   message:
                     type: string
                     required: true
+        '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
         '404':
           description: No social media found with this id.
           content:
@@ -701,7 +727,7 @@ paths:
                   message:
                     type: string
                     required: true
-  /get-band-data:
+  /band-data:
     get:
       tags:
         - Band
@@ -752,12 +778,24 @@ paths:
               required:
               - image
       responses:
-        '201':
+        '200':
           description: Logo set successfully!
           content:
             application/json:
               example:
                 message: Logo set successfully!
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
+        '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
               schema:
                 type: object
                 properties:
@@ -805,8 +843,20 @@ paths:
                 information:
                   type: string
                   required: true
+      '422':
+          description: Invalid id.
+          content:
+            application/json:
+              example:
+                message: Invalid id.
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    required: true
       responses:
-        '201':
+        '200':
           description: Information set successfully!
           content:
             application/json:

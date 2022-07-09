@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { User } from '../models'
-import { authSchema } from '../schemas'
-import { ErrorType } from '../types'
+import { User } from 'models'
+import { authSchema } from 'schemas'
+import { ErrorType } from 'types'
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!loadedUser) {
       const error: ErrorType = new Error("Invalid credentials.")
-      error.statusCode = 404
+      error.statusCode = 422
       throw error
     }
     
@@ -53,7 +53,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!correctPassword) {
       const error: ErrorType = new Error('Invalid credentials.')
-      error.statusCode = 401
+      error.statusCode = 422
+      throw error
+    }
+
+    if(typeof process.env.JWT_SECRET !== 'string') {
+      const error: ErrorType = new Error('JWT secret missing.')
+      error.statusCode = 404
       throw error
     }
 
@@ -63,7 +69,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         userId: loadedUser.id.toString(),
         expiresIn: process.env.JWT_EXPIRES_IN,
       },
-      '~5N2wZsiGkP;l_+BeK*{>)y"))C[fM',
+      process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     )
 

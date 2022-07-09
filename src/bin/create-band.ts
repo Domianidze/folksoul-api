@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import 'dotenv/config'
 
-import { Band } from '../models'
-import { getMongoUrl, getDefaultImagePath } from '../util'
+import { Band } from 'models'
+import { getMongoUrl, getDefaultImagePath } from 'util'
 
 const createBand = async () => {
   try {

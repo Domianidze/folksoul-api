@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { ErrorType } from '../types'
+import { ErrorType } from 'types'
 
 export default (req: Request, _: Response, next: NextFunction) => {
   try {

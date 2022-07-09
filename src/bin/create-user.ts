@@ -4,9 +4,9 @@ import prompt from 'prompt-async'
 import bcrypt from 'bcrypt'
 import 'dotenv/config'
 
-import { User } from '../models'
-import { getMongoUrl } from '../util'
-import { ErrorType } from '../types'
+import { User } from 'models'
+import { getMongoUrl } from 'util'
+import { ErrorType } from 'types'
 
 const createUser = async () => {
   try {

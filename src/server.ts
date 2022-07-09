@@ -5,9 +5,9 @@ import mongoose from 'mongoose'
 import SwaggerUI from 'swagger-ui-express'
 import 'dotenv/config'
 
-import { authRoutes, memberRoutes, socialMediaRoutes, bandRoutes } from './routes'
-import { corsMiddleware, errorMiddleware, multerMiddleware, swaggerMiddleware } from './middleware'
-import { getMongoUrl } from './util'
+import { authRoutes, memberRoutes, socialMediaRoutes, bandRoutes } from 'routes'
+import { corsMiddleware, errorMiddleware, multerMiddleware, swaggerMiddleware } from 'middleware'
+import { getMongoUrl } from 'util'
 
 const server: Express = express()
 
